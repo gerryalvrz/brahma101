@@ -55,6 +55,17 @@ body {
 }
 }
 
+#particles-js {
+    position: fixed; /* Ensures it stays in the background */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    z-index: -1; /* Puts it behind all other content */
+    pointer-events: auto; /* Prevents interaction with the particles layer */
+}
+
+
 /* Blinking Cursor */
 .blinking-cursor {
     display: inline-block;
