@@ -1,44 +1,9 @@
 
-const messages = [
-    "Wake up, Neo...",
-    "Follow the white rabbit...",
-    "(R)evolve... you are the voice of the revolution.",
-    "Buidl the hidden patterns of reality...",
-    "Reality’s structure is not static; Adapt, weave, and bend it—each innovation a new pathway through the matrix."
-];
+// =========================
+// Matrix Rain Animation Section
+// =========================
 
-let currentMessageIndex = 0;
-let currentCharacterIndex = 0;
-
-const terminalOutput = document.getElementById('terminal-output');
-
-function typeMessage() {
-    if (currentMessageIndex < messages.length) {
-        const currentMessage = messages[currentMessageIndex];
-
-        if (currentCharacterIndex === 0) {
-            terminalOutput.textContent = ""; // Clear old message
-        }
-
-        if (currentCharacterIndex < currentMessage.length) {
-            // Add the next character
-            terminalOutput.textContent =
-                currentMessage.slice(0, currentCharacterIndex + 1);
-            currentCharacterIndex++;
-            setTimeout(typeMessage, 100); // Delay between characters
-        } else {
-            // Finished typing current message
-            currentCharacterIndex = 0;
-            currentMessageIndex++;
-            setTimeout(typeMessage, 1500); // Delay between messages
-        }
-    } else {
-        // Loop back to the first message
-        currentMessageIndex = 0;
-        setTimeout(typeMessage, 1500);
-    }
-}// Start Typing Effect on Page Load
-window.onload = typeMessage;
+// Select the canvas and get its 2D context
 
 const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
@@ -51,7 +16,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-const matrix = 'AB01CD亜愛01安EFGHIJ以位因01KLMN虚居記OP01QRわをんS10TUVW10XY歌会10時思Z1234567水火木8910@#$%^&*()*&^%';
+const matrix = 'AB0℥1ℌCD亜愛01安EℌFGHIJ以位因01KℑLMN虚居記O♈︎P01QRわをんS10TUVW1♑︎0XY歌会10時思Z12♅34567水火木891♃0@#$%☿^&*()♆*&^%';
 const fontSize = 16;
 const columns = Math.floor(canvas.width / fontSize);
 const drops = Array(columns).fill(1);

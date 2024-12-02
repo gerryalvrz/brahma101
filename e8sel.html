@@ -3,59 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Section - Cypherpunk Styled Webpage</title>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> <!-- Using VT323 font -->
+    <title>E8 S.E.L.</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <link rel="stylesheet" href="styling.css">
+    <script src="sphereparticles.js" defer></script>
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0f0c29, #032B2D, #24243e); /* Dark background with green hints */
-            background-attachment: fixed;
-            font-family: 'Courier New', monospace; /* Cypherpunk-inspired font */
-            color: #00ff00; /* Neon green text */
-            overflow-y: auto; /* Allow scrolling */
-            padding: 20px;
-            box-sizing: border-box;
+        #particle-sphere {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #032B2D, #24243e); /* Gradient Background */
+            z-index: -1; /* Put behind other content */
+        }
+
+        header {
             position: relative;
-            scroll-behavior: smooth; /* Smooth scrolling */
-        }
-
-        .content {
             text-align: center;
-            padding: 20px;
-            border: 2px solid #00ff00;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.6); /* Transparent black background */
-            margin-top: 20px;
-            width: 90%;
-            max-width: 600px;
+            color: #00ff00; /* Neon Green */
+            font-family: 'Courier New', monospace;
+            margin-top: 20vh;
         }
 
-        h1, h2 {
-            font-family: 'VT323', monospace;
-            margin-bottom: 10px;
-            color: #00ff00;
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px #00ff00; /* Glow Effect */
         }
 
-        iframe {
-            margin-top: 20px;
-            border: none;
-            width: 560px;
-            height: 315px;
-            max-width: 90%;
+        header p {
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
-    <div class="content">
-        <h1>E8 SEL</h1>
-        <p>Enjoy this curated track to immerse yourself in the interdimensional circus!</p>
-        <!-- Embedded YouTube Video -->
-        <iframe src="https://www.youtube.com/embed/XzaZOPIYA-Q" allowfullscreen></iframe>
-        <a href="/" class="button">Back to Home</a>
-    </div>
+    <div id="particle-sphere"></div>
+    <header>
+        <h1>E8 Socio Economic Lattice</h1>
+        <p>Explore the intricate hyperstructure of reality.</p>
+    </header>
 </body>
 </html>
