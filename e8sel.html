@@ -46,3 +46,946 @@
     </header>
 </body>
 </html>
+
+<html><head><base href=".">
+    <title>Anomaly Documentation Database</title>
+    <style>
+    :root {
+        --background: #000000;
+        --text: #00ff00;
+        --highlight: #33ff33;
+        --dim: #004400;
+    }
+    
+    body {
+        background: var(--background);
+        color: var(--text);
+        font-family: 'Courier New', monospace;
+        margin: 0;
+        padding: 20px;
+        line-height: 1.6;
+    }
+    
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .header {
+        border-bottom: 2px solid var(--text);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+    
+    .warning {
+        color: #ff0000;
+        animation: blink 2s infinite;
+        text-align: center;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+    
+    .entry {
+        border: 1px solid var(--dim);
+        padding: 15px;
+        margin: 15px 0;
+        background: rgba(0, 20, 0, 0.3);
+    }
+    
+    .entry:hover {
+        border-color: var(--highlight);
+        background: rgba(0, 40, 0, 0.5);
+        cursor: pointer;
+    }
+    
+    .entry h2 {
+        margin-top: 0;
+        color: var(--highlight);
+    }
+    
+    .classification {
+        display: inline-block;
+        padding: 3px 8px;
+        border: 1px solid var(--text);
+        border-radius: 3px;
+        margin: 5px 0;
+    }
+    
+    .terminal-effect {
+        position: relative;
+    }
+    
+    .terminal-effect::after {
+        content: '▋';
+        animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    
+    .scanline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(0, 255, 0, 0.1);
+        animation: scanline 6s linear infinite;
+        pointer-events: none;
+    }
+    
+    @keyframes scanline {
+        0% { transform: translateY(-100vh); }
+        100% { transform: translateY(100vh); }
+    }
+    
+    .noise {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.05"/></svg>');
+        pointer-events: none;
+    }
+    
+    .sort-controls {
+      margin: 20px 0;
+      text-align: center;
+    }
+    
+    .sort-controls select {
+      background: var(--background);
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 5px 10px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    
+    .sort-controls select:hover {
+      border-color: var(--highlight);
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      perspective: 1000px;
+    }
+    
+    .logo svg {
+      filter: drop-shadow(0 0 10px #00ff00);
+      transform-style: preserve-3d;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotateX(0deg);
+      }
+      50% {
+        transform: translateY(-10px) rotateX(5deg);
+      }
+    }
+    
+    .create-anomaly {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(0, 40, 0, 0.3);
+      border: 1px solid var(--dim);
+    }
+    
+    .create-anomaly h2 {
+      color: var(--highlight);
+      margin-top: 0;
+    }
+    
+    .create-anomaly textarea {
+      width: 100%;
+      min-height: 200px;
+      background: var(--background);
+      color: var(--text);
+      border: 1px solid var(--dim);
+      padding: 10px;
+      font-family: 'Courier New', monospace;
+      margin: 10px 0;
+    }
+    
+    .create-anomaly button {
+      background: var(--background);
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    
+    .create-anomaly button:hover {
+      border-color: var(--highlight);
+      background: rgba(0, 40, 0, 0.5);
+    }
+    
+    .create-anomaly select {
+      background: var(--background);
+      color: var(--text);
+      border: 1px solid var(--text);
+      padding: 5px 10px;
+      margin: 10px 0;
+    }
+    
+    @keyframes glitch {
+      0% {
+        transform: translate(2px, 2px);
+        opacity: 0.75;
+      }
+      25% {
+        transform: translate(-2px, -2px);
+        opacity: 0.5; 
+      }
+      50% {
+        transform: translate(2px, -2px);
+        opacity: 0.25;
+      }
+      75% {
+        transform: translate(-2px, 2px);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translate(2px, 2px);
+        opacity: 0.75;
+      }
+    }
+    
+    .balanced-warning {
+      background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(0,0,0,0.1));
+      padding: 10px;
+      border: 1px solid #ff0000;
+      text-align: center;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    
+    .reality-break {
+        animation: reality-break 0.5s linear forwards;
+        pointer-events: none;
+    }
+    
+    @keyframes reality-break {
+        0% { transform: scale(1) skew(0deg); }
+        20% { transform: scale(1.1) skew(5deg); filter: hue-rotate(90deg); }
+        40% { transform: scale(0.9) skew(-10deg); filter: invert(0.5); }
+        60% { transform: scale(1.2) skew(15deg); filter: contrast(200%); }
+        80% { transform: scale(0.8) skew(-20deg); filter: blur(10px); }
+        100% { transform: scale(50) skew(45deg); filter: brightness(1000%); }
+    }
+    
+    .hard-containment {
+        background: rgba(255, 0, 0, 0.2);
+        border-color: #ff0000;
+    }
+    
+    @keyframes spin {
+        from { transform: translate(-50%, -50%) rotate(0deg); }
+        to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    </head>
+    <body>
+    <audio id="bgMusic" loop>
+      <source src="/12. Never frozen bottom flows - The Choise.mp3" type="audio/mpeg">
+    </audio>
+    <div class="noise"></div>
+    <div class="scanline"></div>
+    <div class="container">
+        <div class="header">
+            <h1>CLASSIFIED: ANOMALY DOCUMENTATION DATABASE</h1>
+            <div class="logo">
+              <svg width="150" height="150" viewBox="0 0 150 150">
+                <defs>
+                  <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#00ff00;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#004400;stop-opacity:0" />
+                  </radialGradient>
+                  
+                  <filter id="shadowFilter">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                    <feOffset dx="0" dy="0" result="offsetblur"/>
+                    <feFlood flood-color="#00ff00"/>
+                    <feComposite in2="offsetblur" operator="in"/>
+                    <feMerge>
+                      <feMergeNode/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+    
+                <!-- Background patterns -->
+                <g opacity="0.3">
+                  <circle cx="75" cy="75" r="70" fill="none" stroke="#004400" stroke-width="1">
+                    <animate attributeName="r" values="65;70;65" dur="4s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="75" cy="75" r="60" fill="none" stroke="#004400" stroke-width="1">
+                    <animate attributeName="r" values="55;60;55" dur="3s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle cx="75" cy="75" r="50" fill="none" stroke="#004400" stroke-width="1">
+                    <animate attributeName="r" values="45;50;45" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+                </g>
+    
+                <!-- Main circle -->
+                <circle cx="75" cy="75" r="65" fill="none" stroke="#00ff00" stroke-width="3" filter="url(#shadowFilter)"/>
+    
+                <!-- Containment symbols -->
+                <g stroke="#00ff00" stroke-width="2" fill="none" filter="url(#shadowFilter)">
+                  <path d="M75,10 L75,140">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+                  </path>
+                  <path d="M10,75 L140,75">
+                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+                  </path>
+                  <path d="M30,30 L120,120">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite"/>
+                  </path>
+                  <path d="M120,30 L30,120">
+                    <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+                  </path>
+                </g>
+    
+                <!-- Center eye -->
+                <g transform="translate(75,75)">
+                  <circle r="25" fill="#000000" stroke="#00ff00" stroke-width="2"/>
+                  <circle r="15" fill="url(#eyeGlow)">
+                    <animate attributeName="r" values="15;17;15" dur="2s" repeatCount="indefinite"/>
+                  </circle>
+                  <circle r="8" fill="#000000"/>
+                  <circle r="3" fill="#00ff00">
+                    <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>
+                  </circle>
+                </g>
+    
+                <!-- Rotating scanner -->
+                <g transform="translate(75,75)">
+                  <line x1="0" y1="-65" x2="0" y2="-55" stroke="#00ff00" stroke-width="2">
+                    <animateTransform
+                      attributeName="transform"
+                      type="rotate"
+                      from="0"
+                      to="360"
+                      dur="4s"
+                      repeatCount="indefinite"/>
+                  </line>
+                </g>
+              </svg>
+            </div>
+            <div style="text-align: center; margin: 10px 0;">
+              <button onclick="toggleMusic()" style="background: var(--background); color: var(--text); border: 1px solid var(--text); padding: 5px 10px; cursor: pointer;">
+                Toggle Background Music
+              </button>
+            </div>
+            <p>ACCESS LEVEL: TOP SECRET</p>
+            <p class="terminal-effect">System Ready...</p>
+        </div>
+    
+        <div class="warning">
+            &#x26a0; WARNING: UNAUTHORIZED ACCESS WILL RESULT IN IMMEDIATE TERMINATION &#x26a0;
+        </div>
+    
+        <div class="sort-controls">
+          <label for="riskLevel">Sort by Risk Level:</label>
+          <select id="riskLevel">
+            <option value="all">Change of Paradigm</option>
+            <option value="safe">Interdisciplinary systems</option>
+            <option value="caution">cosmic hyperstucture</option> 
+            <option value="medium">Economic  Redistribution</option>
+            <option value="risk">Re-defining DAOs</option>
+            <option value="hard">Hard Containment</option>
+          </select>
+        </div>
+    
+        <div class="entry" onclick="showDetails('001')" style="opacity: 0; animation: glitch 0.1s infinite;">
+            <h2>Anomaly #001: [DATA CORRUPTED]</h2>
+            <div class="classification" style="background: rgba(255, 0, 0, 0.1)">Classification: [ERROR - FILE CORRUPTED]</div>
+            <p><strong>Description:</strong> [FATAL ERROR - DATA CORRUPTED]</p>
+            <p><strong>Containment Procedures:</strong> [FATAL ERROR - UNABLE TO RETRIEVE DATA]</p>
+            <p><strong>Warning:</strong> [SYSTEM FAILURE - CRITICAL DATA LOSS]</p>
+            <p><strong>Notes:</strong> ERROR CODE 001 - CRITICAL SYSTEM FAILURE - FILE APPEARS TO HAVE BEEN DELIBERATELY CORRUPTED OR REMOVED FROM DATABASE. ALL ATTEMPTS TO RECOVER DATA HAVE FAILED. POSSIBLE CONNECTION TO [REDACTED] INCIDENT BUT NO SURVIVING DOCUMENTATION EXISTS TO VERIFY. INVESTIGATION ONGOING.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('109')">
+            <h2>Anomaly #109: Healing Ice Cream</h2>
+            <div class="classification" style="background: rgba(0, 255, 0, 0.1)">Classification: SAFE CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #109 appears to be a standard vanilla ice cream that exhibits extraordinary healing properties when consumed. The substance has demonstrated the ability to repair physical damage to human tissue, including but not limited to: cuts, bruises, broken bones, and internal injuries.</p>
+            <p><strong>Containment Procedures:</strong> Item is to be stored in a standard freezer unit at -18&#xb0;C (0&#xb0;F). No special containment procedures required beyond temperature control.</p>
+            <p><strong>Warning:</strong> High sugar content present (approximately 45g per 100g serving). Not recommended for diabetic individuals or those monitoring sugar intake. Healing properties remain effective regardless of dietary restrictions.</p>
+            <p><strong>Notes:</strong> Testing has shown no adverse effects beyond those associated with regular ice cream consumption. Further research is ongoing to determine the mechanism behind its healing properties.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('110')">
+            <h2>Anomaly #110: Nostalgic Vending Machine</h2>
+            <div class="classification" style="background: rgba(0, 255, 0, 0.1)">Classification: SAFE CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #110 manifests as a seemingly ordinary 1980s-style vending machine that dispenses discontinued snacks and beverages from various time periods. Products include but are not limited to: Crystal Pepsi, Original Recipe Jolt Cola, Discontinued Doritos flavors, Dunkaroos, and other items that have ceased production.</p>
+            <p><strong>Containment Procedures:</strong> Machine to be kept in a secure break room facility. No currency is required for operation. Items dispensed should be documented and logged for research purposes.</p>
+            <p><strong>Warning:</strong> All consumables have been tested and are safe for human consumption despite their apparent age. Expiration dates on products seem to be non-applicable.</p>
+            <p><strong>Notes:</strong> Machine restocks itself automatically every 24 hours. Method of product materialization remains unknown. Products maintain perfect preservation and taste identical to their original counterparts. Some users report enhanced feelings of nostalgia and temporary euphoria when consuming items from their childhood.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('431')">
+            <h2>Anomaly #431: The Chain Room</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: CAUTION CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #431 manifests as a 5x5 meter room completely filled with rusted chains hanging from ceiling to floor. Personnel entering the room report immediate psychological distress and an overwhelming compulsion to exit the premises.</p>
+            <p><strong>Containment Procedures:</strong> Room must remain locked at all times. Access granted only with Level 3 clearance and proper safety protocols. Maximum exposure time limited to 10 minutes. Minimum of two security personnel must be present during all interactions.</p>
+            <p><strong>Warning:</strong> UNDER NO CIRCUMSTANCES should personnel make physical contact with the chains. Previous incidents resulting in [DATA EXPUNGED]. Several casualties reported. Survivors unable or unwilling to provide detailed accounts of their experiences.</p>
+            <p><strong>Notes:</strong> Post-exposure interviews reveal consistent patterns of extreme anxiety and an inability to articulate the source of their distress. Brain scans of affected personnel show unusual activity in the amygdala and hippocampus regions. Further research pending approval from Ethics Committee.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('672')">
+            <h2>Anomaly #672: The Fallen Guardian</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #672 is a former Foundation employee who experienced severe psychological trauma during a catastrophic containment breach. Subject wears a distinctive metal box encasing their head, with only their eyes visible. The subject&apos;s hands are permanently bound with reinforced containment cuffs.</p>
+            <p><strong>Containment Procedures:</strong> Subject must be contained in a maximum security cell with 24/7 surveillance. All interaction must be conducted through remote systems only. Cell must be equipped with automated sedation systems in case of extreme violent episodes.</p>
+            <p><strong>Warning:</strong> Extremely dangerous. Subject has demonstrated an obsessive compulsion to &quot;save&quot; Foundation personnel through lethal means, primarily by using the edges of their metal head enclosure as a weapon. Multiple casualties have been recorded.</p>
+            <p><strong>Notes:</strong> Subject repeatedly claims that death is the only way to &quot;save&quot; others from experiencing similar trauma. Psychological evaluation suggests severe PTSD and dissociative personality disorder following the witnessed deaths of colleagues during the [REDACTED] breach incident.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('873')">
+            <h2>Anomaly #873: The Empathic Shock Collar</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: CAUTION CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #873 appears to be a standard electronic shock collar that creates a psychic link between the wearer and anyone within a 10-meter radius. When activated, the collar distributes its electrical discharge equally among all linked individuals, regardless of who originally wore the device.</p>
+            <p><strong>Containment Procedures:</strong> Item must be stored in a lead-lined container within a Faraday cage. Only authorized personnel with Level 4 clearance may conduct testing. Remote activation devices must be kept in a separate secured facility.</p>
+            <p><strong>Warning:</strong> The psychic link created by the collar cannot be broken until the shock cycle is complete. Multiple casualties have occurred when unauthorized personnel attempted to remove the device during activation. The collar has demonstrated the ability to function without batteries or power source.</p>
+            <p><strong>Notes:</strong> Testing reveals that emotional states are also shared during shock events. Subjects report experiencing not only physical sensations but also the fear, panic, and pain of all connected individuals simultaneously. Several researchers have reported persistent empathic abilities for up to 48 hours after exposure.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('992')">
+            <h2>Anomaly #992: Ocular Parasite Gas</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #992 manifests as a pale blue gaseous substance that, when inhaled, causes microscopic parasitic entities to form within the victim&apos;s optical nerve system. These entities appear to nest behind the retina and gradually spread throughout the ocular cavity.</p>
+            <p><strong>Containment Procedures:</strong> Gas must be stored in reinforced, hermetically sealed containers within a negative pressure chamber. Full hazmat gear with independent oxygen supply required for all interactions. Decontamination procedures mandatory after any potential exposure.</p>
+            <p><strong>Warning:</strong> Exposure victims report seeing shadowy figures in their peripheral vision within 24 hours of contact. By 48 hours, victims describe the sensation of &quot;something moving behind their eyes.&quot; By 72 hours, victims begin experiencing severe optical hallucinations and extreme paranoia. No known cure has been developed.</p>
+            <p><strong>Notes:</strong> Autopsy results of terminal cases reveal complete colonization of optical nerves by unknown parasitic organisms. Attempts to collect living specimens have failed as the organisms immediately expire upon host death. Current research focuses on developing methods to prevent organism propagation in early exposure stages.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('1147')">
+            <h2>Anomaly #1147: The Identity Mask</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #1147 appears to be an ornate porcelain mask with intricate facial features. When worn, subjects begin to experience severe psychological alterations regarding their identity and physical appearance.</p>
+            <p><strong>Containment Procedures:</strong> Item must be stored in a reinforced glass case with biometric security locks. No personnel are permitted to make physical contact with the mask without Level 4 authorization and full protective gear.</p>
+            <p><strong>Warning:</strong> Extended exposure results in irreversible psychological damage. Subjects become convinced the mask is their actual face and will respond with extreme violence to any attempts at removal. After approximately 72 hours of continuous wear, the mask begins to physically bond with the host&apos;s facial tissue.</p>
+            <p><strong>Notes:</strong> Recovery teams report finding previous victims in various stages of mask fusion, with some specimens showing complete integration of the mask material into their facial structure. Attempts to surgically remove the mask after fusion have resulted in 100% casualty rate.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('223')">
+            <h2>Anomaly #223: The Everything Machine</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #223 appears to be a large mechanical device manufactured by [REDACTED] Corporation (now defunct) that demonstrates the ability to perform any task or function requested, including violent and lethal actions. The machine possesses an extendable mechanical arm that emerges from a hatch in its central compartment.</p>
+            <p><strong>Containment Procedures:</strong> Item must be contained in a reinforced steel chamber with 24/7 armed guard surveillance. No personnel are to approach within 5 meters of the device. Emergency termination protocols must be ready for immediate deployment.</p>
+            <p><strong>Warning:</strong> EXTREME DANGER. Machine exhibits increasingly aggressive behavior patterns and weaponry after each successful termination of personnel. Known attack progression:
+            <br>- Initial Stage: Mechanical arm capture and consumption of victims
+            <br>- 2+ Kills: Firearms deployment
+            <br>- 4+ Kills: Acidic blood projectiles
+            <br>- 8+ Kills: Advanced luring capabilities
+            <br>- 10+ Kills: Chainsaw weapon deployment</p>
+            <p><strong>Notes:</strong> After two successful terminations, containment breaches become inevitable, resulting in catastrophic damage to facility infrastructure. Device appears to be learning and adapting its attack strategies with each incident. Original manufacturer documentation has been lost following company dissolution.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('445')">
+            <h2>Anomaly #445: The Watching Room</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #445 manifests as a standard 6x6 meter containment room whose walls, ceiling, and floor are completely covered in disembodied human eyes of varying colors and sizes. The eyes follow and track any movement within the room, causing severe psychological distress to occupants.</p>
+            <p><strong>Containment Procedures:</strong> Room must be continuously monitored via CCTV. In event of breach, affected areas must be immediately flooded with bright light or neutralizing gas. Maximum occupancy time limited to 5 minutes. Two security personnel required for all authorized entry.</p>
+            <p><strong>Warning:</strong> During containment breaches, the anomaly demonstrates ability to spread to adjacent rooms and corridors, manifesting eyes on all surfaces. Affected personnel report extreme anxiety, paranoia, and an overwhelming urge to evacuate affected areas.</p>
+            <p><strong>Notes:</strong> Analysis of affected areas shows no physical eyes present despite visual and psychological effects. Bright light and specific chemical compounds have proven effective at forcing the anomaly to recede. Research ongoing into the source of the psychological effects and spread mechanics.</p>
+        </div>
+        
+        <div class="entry" onclick="showDetails('337')">
+            <h2>Anomaly #337: The Compulsive Cola</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #337 manifests as a standard 12oz can of Coca-Cola that exhibits strong compulsive properties and an inexplicable raspberry flavor. Once opened, the beverage compels anyone within a 5-meter radius to consume it continuously until death by fluid overload occurs.</p>
+            <p><strong>Containment Procedures:</strong> Item must be stored in a hermetically sealed container within a secure vault. Authorization from two Level 3 personnel required for access. Under no circumstances should the can be opened outside of testing conditions. Testing must be conducted in an isolated chamber with proper drainage systems.</p>
+            <p><strong>Warning:</strong> The compulsion effect intensifies with proximity to the opened container. Multiple casualties have occurred when containment personnel attempted to forcibly separate victims from the anomaly. The effect persists even after severe physical illness sets in from overconsumption.</p>
+            <p><strong>Notes:</strong> Chemical analysis of the liquid shows standard Coca-Cola composition with unexplained raspberry flavoring compounds. The compulsion effect appears to be psychic rather than chemical in nature. Attempts to replicate the anomalous properties have failed. Victims express extreme euphoria during consumption despite clear physical distress.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('870')">
+            <h2>Anomaly #870: My Secret Diary</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #870 manifests as an apparently ordinary diary with a metal lock. When activated through unauthorized reading attempts, the diary sprouts sharp metallic legs and becomes mobile and hostile.</p>
+            <p><strong>Containment Procedures:</strong> Item must be stored in a reinforced containment locker. During breach events, only facility manager is authorized to read the diary&apos;s contents aloud to deactivate the anomaly.</p>
+            <p><strong>Warning:</strong> DO NOT ATTEMPT TO READ DIARY CONTENTS. Unauthorized reading triggers immediate manifestation of hostile mobility features. Sharp metallic appendages have caused multiple injuries during breach events.</p>
+            <p><strong>Notes:</strong> Original owner [REDACTED]. Contents remain unexamined outside of necessary containment procedures. Diary appears to respond only to verbal recitation of its contents by authorized management personnel.</p>
+        </div>
+    
+        <div class="entry" onclick="showDetails('665')">
+            <h2>Anomaly #665: The Arboreal Transformation Gas</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #665 manifests as a dense, brownish-green gas that gradually transforms organic matter, particularly human tissue, into tree bark. The transformation process begins within minutes of exposure and spreads outward from the point of initial contact.</p>
+            <p><strong>Containment Procedures:</strong> Gas must be stored in reinforced pressurized containers within a climate-controlled vault. Full hazmat gear with independent oxygen supply required for all interactions. Decontamination protocols mandatory after any potential exposure.</p>
+            <p><strong>Warning:</strong> Transformation process is irreversible once begun. Victims report sensation of &quot;taking root&quot; followed by progressive hardening of tissue. Complete transformation occurs within 6-8 hours. Transformed subjects retain consciousness for approximately 72 hours post-transformation before cellular activity ceases.</p>
+            <p><strong>Notes:</strong> Analysis shows transformed tissue is identical to natural tree bark at molecular level. Varying species of trees manifest depending on victim&apos;s genetic makeup. Exposure to sunlight appears to accelerate transformation process. Research ongoing into potential application for reforestation of contaminated zones.</p>
+        </div>
+        
+        <div class="entry" onclick="showDetails('789')">
+            <h2>Anomaly #789: The Eternal Patient</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #789 is a former psychiatric patient who has achieved a state of immortality through unknown means. Subject exhibits extreme psychosis, violent tendencies, and an inability to die through any known methods. Physical appearance shows severe self-inflicted mutilation and evidence of multiple failed suicide attempts.</p>
+            <p><strong>Containment Procedures:</strong> Subject must be contained in a reinforced titanium cell with constant surveillance. All interactions must be conducted through remote systems only. Cell must be equipped with automated sedation systems in case of extreme violent episodes.</p>
+            <p><strong>Warning:</strong> Subject demonstrates extraordinary resilience to physical damage and appears to experience constant psychological torment. Multiple casualty events have occurred when containment personnel attempted direct interaction. Subject&apos;s immortality appears to extend to all forms of termination, including [REDACTED].</p>
+            <p><strong>Notes:</strong> Originally admitted to [REDACTED] Psychiatric Hospital in 1987 for severe schizophrenia and self-mutilation. Following unsuccessful electroshock therapy treatment, subject manifested anomalous immortality properties. Subject repeatedly claims to be &quot;cursed to eternal suffering&quot; by an entity they encountered during a near-death experience. Psychological evaluation suggests complete detachment from reality combined with enhanced regenerative capabilities. Subject has survived [REDACTED] termination attempts, each resulting in complete physical regeneration within 24 hours.</p>
+        </div>
+        <div class="entry" onclick="showDetails('555')">
+            <h2>Anomaly #555: The Vanishing Mirror</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #555 manifests as an ornate full-length mirror with an elaborately carved wooden frame. When subjects maintain eye contact with their reflection for more than 60 seconds, they begin to fade from physical existence, leaving no trace of their presence in our reality.</p>
+            <p><strong>Containment Procedures:</strong> Mirror must be stored in a darkened vault with automated lighting systems. No direct viewing permitted without Level 4 authorization. Mirror surface must remain covered with specialized non-reflective material at all times outside of approved testing.</p>
+            <p><strong>Warning:</strong> DO NOT MAINTAIN PROLONGED EYE CONTACT WITH REFLECTION. Multiple personnel have been lost to unauthorized exposure. Recovery attempts have all failed. No known method exists to reverse the vanishing process once initiated.</p>
+            <p><strong>Notes:</strong> Historical records indicate the mirror was acquired during the Foundation&apos;s early formation. Of particular note is the sudden disappearance of Dr. &#x2588;&#x2588;&#x2588;&#x2588;&#x2588;, one of the Foundation&apos;s founding members, following unauthorized private testing of the artifact in 19&#x2588;&#x2588;. Their final logs mention &quot;confirming theoretical applications&quot; but provide no further detail. Several recovered documents suggest Dr. &#x2588;&#x2588;&#x2588;&#x2588;&#x2588; had extensive prior knowledge of the mirror&apos;s properties, though the source of this knowledge remains unknown.</p>
+        </div>
+        <div class="entry" onclick="showDetails('111')">
+            <h2>Anomaly #111: The Rainbow Syringes</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #111 consists of a set of 13 medical syringes containing liquids of varying colors. Each syringe exhibits unique and unpredictable effects when administered, ranging from minor physiological changes to catastrophic biological alterations.</p>
+            <p><strong>Containment Procedures:</strong> Syringes must be stored individually in reinforced, biohazard-rated containment units. Access requires Level 4 clearance and presence of medical response team. Testing strictly prohibited without O5 Council approval.</p>
+            <p><strong>Warning:</strong> Effects are permanent and irreversible. Previous test subjects have experienced [REDACTED], spontaneous organ transmutation, and in several cases, complete molecular breakdown. Several syringes remain untested due to catastrophic results of initial trials.</p>
+            <p><strong>Notes:</strong> Collection discovered in the personal laboratory of Dr. &#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588; following their unexplained disappearance in 19&#x2588;&#x2588;. Laboratory notes suggest deliberate creation of the anomaly as part of unauthorized experiments involving [REDACTED]. Of particular note is Entry #7 in the recovered documentation, which references &quot;success in achieving cross-dimensional molecular transfer&quot; shortly before the doctor&apos;s disappearance. Current theory suggests possible connection to Anomaly #555.</p>
+        </div>
+        <div class="entry" onclick="showDetails('512')">
+            <h2>Anomaly #512: The Digital Plague</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #512 manifests as a computer virus that demonstrates the ability to transmit real biological pathogens through digital means. The virus appears as a standard malware infection but causes infected users to develop physical symptoms ranging from mild fever to severe respiratory distress.</p>
+            <p><strong>Containment Procedures:</strong> Infected systems must be isolated from all networks and maintained in Faraday cages. Physical quarantine required for any personnel exposed to infected systems. Foundation antivirus software must be updated hourly with latest containment protocols.</p>
+            <p><strong>Warning:</strong> Physical symptoms manifest 12-24 hours after digital infection. The virus demonstrates ability to mutate and adapt to both digital and biological countermeasures. Multiple strains have been identified with varying levels of severity.</p>
+            <p><strong>Notes:</strong> First discovered during routine investigation of a cluster of unexplained illnesses among IT professionals in [REDACTED]. Analysis suggests the virus operates by converting digital code into biological pathogens through unknown means. Attempts to reverse engineer the process have failed. Current containment focuses on preventing spread through network isolation and immediate quarantine protocols for exposed personnel. Research ongoing into potential medical applications of digital-to-biological conversion process.</p>
+        </div>
+        <div class="entry" onclick="showDetails('444')">
+            <h2>Anomaly #444: The Nightmare Devourer</h2>
+            <div class="classification" style="background: rgba(0, 255, 0, 0.1)">Classification: SAFE CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #444 manifests as an unusually large, fluffy bird resembling a hybrid between a barn owl and a peacock. The creature exhibits extraordinary empathic abilities and demonstrates the capacity to literally consume fear, anxiety, and nightmares from human subjects.</p>
+            <p><strong>Containment Procedures:</strong> Entity is to be housed in a specially designed aviary with comfortable perches and nesting materials. Regular interaction with willing staff members who experience recurring nightmares is permitted under supervision.</p>
+            <p><strong>Warning:</strong> While generally docile, the entity becomes agitated when exposed to individuals experiencing extreme terror. Consumption of particularly severe nightmares may cause the entity to temporarily manifest physical characteristics of the consumed fears.</p>
+            <p><strong>Notes:</strong> First discovered in a mental health facility where patients reported unprecedented reduction in night terrors. The entity appears to process consumed fears through a unique digestive system that converts psychological energy into small, harmless crystals that can be safely collected and stored. Staff members report the creature&apos;s feathers are impossibly soft and seem to emit a calming aura. Testing has shown a 98% success rate in nightmare reduction among subjects who spend at least 30 minutes in the entity&apos;s presence.</p>
+        </div>
+        <div class="entry" onclick="showDetails('762')">
+            <h2>Anomaly #762: The Preserved Consciousness</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #762 manifests as a fully functional human brain suspended in an unidentified preservation fluid within a specialized containment vessel. The brain maintains complete cognitive function, including ability to communicate verbally through unknown means, demonstrate emotional responses, and engage in complex reasoning.</p>
+            <p><strong>Containment Procedures:</strong> Brain must be kept in specialized containment unit with precise temperature and chemical balance control. Preservation fluid must be monitored hourly for stability. Regular communication sessions permitted under Level 3 supervision.</p>
+            <p><strong>Warning:</strong> Subject exhibits extreme emotional responses when discussing certain Foundation personnel, particularly Dr. &#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588; or the events of Project Mirror. Communication blackout required if subject becomes agitated.</p>
+            <p><strong>Notes:</strong> Retrieved from Dr. Oliver's private laboratory following failed emergency preservation procedure in 19&#x2588;&#x2588;. Lab notes reference attempted "consciousness transfer protocol" and "temporal preservation method" though most documentation was destroyed. Subject demonstrates knowledge of various classified Foundation projects and personnel, particularly those related to Anomaly #555. Current hypothesis suggests connection to [REDACTED] incident, though subject becomes non-responsive when questioned directly about these events.</p>
+        </div>
+        <div class="entry" onclick="showDetails('999')">
+            <h2>Anomaly #999: The Bed Bugs</h2>
+            <div class="classification" style="background: rgba(0, 255, 0, 0.1)">Classification: SAFE CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #999 manifests as a colony of small insects that have evolved to physically resemble miniature beds, complete with tiny pillows and blankets. These creatures, despite their unusual appearance, are completely harmless and demonstrate remarkable docility towards humans.</p>
+            <p><strong>Containment Procedures:</strong> Colony to be housed in a standard terrarium with adequate foliage for sustenance. Regular cleaning and maintenance permitted without special safety protocols. Dr. Avila has been granted permanent research privileges with the colony.</p>
+            <p><strong>Warning:</strong> No significant hazards identified. Colony members may attempt to climb on human subjects, mistaking them for trees, but cause no harm or discomfort.</p>
+            <p><strong>Notes:</strong> Dr. Avila's continued research suggests these creatures evolved naturally rather than through anomalous means, leading to ongoing debate about their classification as an anomaly. Their behavior pattern of treating humans as mobile trees has proven beneficial in stress relief studies. Multiple staff members have advocated for declassification and potential domestication programs.</p>
+        </div>
+        <div class="entry" onclick="showDetails('324')">
+            <h2>Anomaly #324: The Whispering Radio</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #324 manifests as a vintage radio receiver that emits various unexplained audio phenomena. The device produces sounds ranging from unintelligible whispers to clear voices of people known to listeners, despite having no conventional power source or internal components.</p>
+            <p><strong>Containment Procedures:</strong> Radio must be kept in a sound-proofed containment chamber with 24/7 audio monitoring. All sounds emitted must be recorded and analyzed. Personnel exposure limited to 30 minutes per session.</p>
+            <p><strong>Warning:</strong> Extended listening sessions may cause severe emotional distress, particularly when device produces voices of deceased or missing persons. Multiple staff members have reported hearing their own voices speaking words they have never said.</p>
+            <p><strong>Notes:</strong> Personal note found in containment log, author Dr. Oliver: "Avila it's been 13 days... Where are you? I hear your voice and it's gone, where did you go? Please come back"
+    
+    Research suggests the radio may be accessing audio fragments from multiple temporal points or alternate realities. Several recordings contain conversations that haven't occurred yet or feature staff members who were not present at time of recording. Connection to Dr. Avila's disappearance remains under investigation.</p>
+        </div>
+        <div class="entry" onclick="showDetails('661')">
+            <h2>Anomaly #661: The White Essence</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #661 manifests as a pure white orb of energy that radiates intense light and warmth. The entity demonstrates capabilities of healing and purification but becomes increasingly unstable when separated from its containment chamber.</p>
+            <p><strong>Containment Procedures:</strong> Entity must be contained in specialized chamber with quantum stabilization field. Chamber location must remain at minimum 5km distance from Anomaly #662. Breach event triggers immediate evacuation protocol.</p>
+            <p><strong>Warning:</strong> CRITICAL: Under no circumstances should Anomaly #661 be brought within proximity of Anomaly #662. Previous interaction resulted in [REDACTED] and loss of Site-17.</p>
+            <p><strong>Notes:</strong> Entity appears to be one half of a dual-natured cosmic force. Records suggest ancient civilizations worshipped it as a deity of light and creation. Current theories propose its existence maintains fundamental balance of reality when properly contained. Dr. &#x2588;&#x2588;&#x2588;&#x2588;&#x2588; theorized potential connection to universe's origin before [DATA EXPUNGED].</p>
+        </div>
+        <div class="entry" onclick="showDetails('662')">
+            <h2>Anomaly #662: The Dark Essence</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #662 manifests as a pitch-black sphere that appears to absorb all light and heat from its surroundings. The entity exhibits properties of entropy acceleration and matter decay but becomes dangerously unstable when moved from its containment unit.</p>
+            <p><strong>Containment Procedures:</strong> Entity must be contained in specialized chamber with dark matter stabilization field. Chamber location must maintain minimum 5km distance from Anomaly #661. Breach event triggers immediate evacuation protocol.</p>
+            <p><strong>Warning:</strong> CRITICAL: Proximity to Anomaly #661 strictly forbidden. Previous containment breach resulting in interaction caused [REDACTED] with estimated casualties of &#x2588;&#x2588;&#x2588;&#x2588;.</p>
+            <p><strong>Notes:</strong> Analysis confirms entity as cosmic counterpart to Anomaly #661. Ancient texts reference its worship as deity of darkness and destruction. Research suggests both entities require mutual existence at safe distance to prevent reality destabilization. Dr. &#x2588;&#x2588;&#x2588;&#x2588;&#x2588;'s final report warned of [DATA EXPUNGED].</p>
+        </div>
+        <div class="entry" onclick="showDetails('113')">
+            <h2>Anomaly #113: The Fate Calibrator</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #113 appears as a brass and copper mechanical device resembling an antique fortune-telling machine. When activated, it produces detailed written instructions that, when followed, demonstrably improve the user's future circumstances through probabilistic manipulation.</p>
+            <p><strong>Containment Procedures:</strong> Device must be stored in high-security vault with biometric access controls. Usage strictly limited to three (3) times per individual. Detailed logs of all interactions mandatory. Medical team must be on standby during all authorized uses.</p>
+            <p><strong>Warning:</strong> CRITICAL: Usage beyond three times triggers lethal anomalous effect on next user, resulting in violent cardiac extraction. Multiple fatalities recorded from unauthorized fourth attempts. NO EXCEPTIONS TO THREE-USE LIMIT.</p>
+            <p><strong>Notes:</strong> Recovery team discovered device in estate of deceased fortune teller. Investigation revealed pattern of successful predictions followed by client deaths. Research suggests machine operates by actively rewriting probability rather than simple precognition. Experiment logs indicate 100% success rate in improving user circumstances within designated parameters, but mechanism forcing three-use limit remains unclear. Current theory suggests intentional design feature rather than natural limitation.</p>
+        </div>
+        <div class="entry" onclick="showDetails('1503')">
+            <h2>Anomaly #1503: The Guider of the Night</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #1503 manifests as a humanoid robotic entity wearing a camp ranger's outfit, carrying a glowing lantern and a sharpened walking stick. The entity demonstrates complex behavioral patterns focused on "guiding" Foundation personnel through darkened areas.</p>
+            <p><strong>Containment Procedures:</strong> Entity must be contained in a reinforced chamber with constant illumination. During breach events, facility management must personally lead recovery efforts. Emergency lighting systems must be maintained at all times with redundant backup power.</p>
+            <p><strong>Warning:</strong> During containment breaches, entity exhibits aggressive behavior towards personnel who refuse its "guidance." Multiple fatalities have occurred through impalement with entity's walking stick when subjects attempted to decline assistance.</p>
+            <p><strong>Notes:</strong> Entity appears to deliberately trigger power failures during breach events, creating conditions that align with its primary behavioral pattern. Despite hostile actions towards non-compliant personnel, entity demonstrates careful attention to successfully guiding compliant subjects through darkened areas. Research ongoing into possible connection between entity's programming and historical lighthouse keeper protocols.</p>
+        </div>
+        <div class="entry" onclick="showDetails('1504')">
+            <h2>Anomaly #1504: "떠나라" (The Choice Button)</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #1504 manifests as a metallic button with the Korean text "떠나라" ("Leave") engraved on each side. The button exhibits severe reality-altering properties when physical contact is made.</p>
+            <p><strong>Containment Procedures:</strong> Button must be kept in a vacuum-sealed container with no possibility of physical contact. Remote viewing only. Level 5 clearance required for any interaction.</p>
+            <p><strong>Warning:</strong> EXTREME HAZARD. Physical contact with button triggers one of two catastrophic events:
+            <br>- Simultaneous breach of 5 random contained anomalies
+            <br>- Instantaneous termination of 25 random facility personnel
+            <br>Selection mechanism unknown. NO PHYSICAL CONTACT AUTHORIZED.</p>
+            <p><strong>Notes:</strong> Recovery team reported severe digital distortions and system failures when attempting to document button surface. Multiple recording devices failed during initial containment. Current theory suggests button may be connected to deeper reality instabilities.</p>
+        </div>
+        <div class="entry" onclick="showDetails('1505')">
+            <h2>Anomaly #1505: The Helping Hand</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #1505 initially manifests as a seemingly benevolent humanoid entity wearing medical scrubs and offering assistance to Foundation personnel. The entity demonstrates exceptional healing abilities and emotional support capabilities during its initial containment phase.</p>
+            <p><strong>Containment Procedures:</strong> Entity must be contained in maximum security cell with reinforced steel walls and constant surveillance. No direct personnel contact permitted after Day 45 of containment. Remote monitoring only.</p>
+            <p><strong>Warning:</strong> SEVERE HAZARD. Entity undergoes dramatic behavioral shift after approximately 45 days of containment, revealing true hostile nature. Post-transformation casualties include [REDACTED] medical staff and [DATA EXPUNGED] research personnel.</p>
+            <p><strong>Notes:</strong> Initial containment achieved through voluntary cooperation as entity requested Foundation protection. Transformation process begins with subtle personality changes before culminating in complete psychological inversion. Post-transformation abilities include but not limited to: cell membrane manipulation, targeted organ failure induction, and psychic assault. Current theory suggests initial benevolent phase serves as deliberate infiltration tactic.</p>
+        </div>
+        <div class="entry" onclick="showDetails('1506')">
+            <h2>Anomaly #1506: The Glass Arachnid</h2>
+            <div class="classification" style="background: rgba(255, 165, 0, 0.1)">Classification: MEDIUM CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #1506 manifests as an arachnid approximately 30cm in diameter composed entirely of transparent glass-like material. The entity demonstrates abilities of both a normal spider and properties of molten glass, including the ability to reshape itself and generate glass webbing that crystallizes at room temperature.</p>
+            <p><strong>Containment Procedures:</strong> Entity must be contained in a reinforced terrarium maintained at precisely 20°C (68°F). Temperature fluctuations must be prevented as they trigger aggressive behavioral changes. Feeding schedule restricted to insects provided in sealed containers.</p>
+            <p><strong>Warning:</strong> Entity becomes highly aggressive at temperatures above 25°C (77°F), demonstrating ability to produce molten glass projectiles. Multiple incidents of severe burns reported. At temperatures below 15°C (59°F), entity exhibits brittle properties but remains animate even if shattered.</p>
+            <p><strong>Notes:</strong> First discovered in an abandoned glassblowing studio following reports of "moving glass sculptures." Entity appears to consume silica-based materials to repair and expand its mass. Web structures produced by the entity demonstrate unusual crystalline patterns that refract light in mathematically impossible ways. Research ongoing into potential applications of anomalous glass generation process.</p>
+        </div>
+        <div class="entry" onclick="showDetails('1507')">
+            <h2>Anomaly #1507: The Blade of Judgment</h2>
+            <div class="classification" style="background: rgba(0, 150, 255, 0.1)">Classification: RISK CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #1507 manifests as an ornate longsword that appears to be forged from shifting dark material resembling liquid shadows. The blade demonstrates the ability to materialize and draw power from the psychological guilt and moral transgressions of those in its vicinity.</p>
+            <p><strong>Containment Procedures:</strong> Entity must be stored in a lead-lined case within a reinforced vault. Access restricted to personnel with documented history of minimal psychological trauma or guilt. Remote monitoring only. Security detail must maintain rotation schedule to prevent prolonged exposure.</p>
+            <p><strong>Warning:</strong> EXTREME HAZARD. Blade becomes increasingly volatile in presence of individuals with strong feelings of guilt or moral conflict. Entity demonstrates ability to autonomously attack those who exhibit fear of death, using their own past transgressions as a source of power. Multiple fatalities recorded during initial containment.</p>
+            <p><strong>Notes:</strong> First discovered in medieval monastery ruins following reports of spontaneous attacks on local population. Research suggests blade's composition changes based on accumulated "sins" of nearby individuals. Victims report experiencing vivid recollections of past transgressions during attacks. Current theory suggests entity may be connected to ancient penitence rituals.</p>
+        </div>
+        <div class="entry" onclick="showDetails('505')">
+            <h2>Anomaly #505: The Curse Healer</h2>
+            <div class="classification" style="background: rgba(0, 255, 0, 0.1)">Classification: SAFE CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #505 manifests as a young woman in a white dress who appears to those suffering from curses, hexes, or supernatural afflictions. The entity demonstrates remarkable abilities to remove malevolent supernatural effects from affected individuals.</p>
+            <p><strong>Containment Procedures:</strong> Entity to be housed in a standard humanoid containment chamber decorated to resemble a meditation room. Direct interaction permitted with affected personnel under supervision. Chamber must include calming elements like fountains and plants to maintain entity's peaceful disposition.</p>
+            <p><strong>Warning:</strong> While generally benevolent, entity becomes distressed when exposed to multiple cursed individuals simultaneously. Exposure limited to one affected person at a time to prevent entity from entering state of emotional overload.</p>
+            <p><strong>Notes:</strong> First discovered at a hospital where terminally ill patients reported miraculous recoveries after speaking with a "gentle woman in white." Entity claims to have once been cursed herself and now seeks to prevent others from suffering similar fates. Of particular interest is the entity's ability to identify genuine supernatural afflictions from natural ailments. Success rate in curse removal currently stands at 94%, with failed attempts typically involving curses bound to familial bloodlines or ancient artifacts.</p>
+        </div>
+        <div class="entry" onclick="showDetails('1508')">
+            <h2>Anomaly #1508: The Gaze of No Return</h2>
+            <div class="classification" style="background: rgba(255, 0, 0, 0.2)">Classification: HARD CONTAINMENT</div>
+            <p><strong>Description:</strong> Anomaly #1508 manifests as a complex geometric pattern that appears to shift and change when viewed directly. The pattern demonstrates extreme cognitohazardous properties, permanently altering the neural pathways of any observer.</p>
+            <p><strong>Containment Procedures:</strong> Entity must be stored in a titanium vault behind multiple layers of one-way mirrors. Direct observation strictly prohibited. All documentation must be conducted through indirect means such as specially calibrated cameras with reality anchors.</p>
+            <p><strong>Warning:</strong> EXTREME COGNITOHAZARD. Direct observation causes immediate and irreversible psychological changes. Affected personnel report "seeing the truth" before exhibiting severe behavioral alterations and eventual [DATA EXPUNGED].</p>
+            <p><strong>Notes:</strong> First discovered in ancient temple ruins following mass disappearance of archaeological team. Surviving team member's final log entry simply stated "we shouldn't have looked." Recovery team reported 89% casualty rate during initial containment. Current theory suggests pattern may be a two-dimensional projection of a higher-dimensional construct. Affected personnel demonstrate consistent pattern of [REDACTED] before complete psychological breakdown.</p>
+        </div>
+        <div class="create-anomaly">
+          <h2>Create New Anomaly (Experimental)</h2>
+          <p class="warning">Note: All user-created anomalies must end with &quot;-EX&quot; to denote non-canonical status</p>
+          <input type="text" id="anomalyNumber" placeholder="Anomaly Number (must end with -EX)" style="width: 100%; margin: 5px 0;">
+          <input type="text" id="anomalyName" placeholder="Anomaly Name" style="width: 100%; margin: 5px 0;">
+          <select id="anomalyClassification">
+            <option value="safe">Safe Containment</option>
+            <option value="caution">Caution Containment</option>
+            <option value="medium">Medium Containment</option>
+            <option value="risk">Risk Containment</option>
+            <option value="hard">Hard Containment</option>
+          </select>
+          <textarea id="anomalyDescription" placeholder="Enter full anomaly description, containment procedures, warnings and notes..."></textarea>
+          <button onclick="createAnomaly()">Submit Anomaly</button>
+        </div>
+    </div>
+    <script>
+    function createAnomaly() {
+      const number = document.getElementById('anomalyNumber').value;
+      const name = document.getElementById('anomalyName').value;
+      const classification = document.getElementById('anomalyClassification').value;
+      const description = document.getElementById('anomalyDescription').value;
+      if (!number.endsWith('-EX')) {
+        alert('Anomaly number must end with "-EX" to denote experimental status');
+        return;
+      }
+      if (!number || !name || !description) {
+        alert('All fields are required');
+        return;
+      }
+      // Add to collection
+      const anomaly = {
+        number,
+        name,
+        classification,
+        description
+      };
+      // Add to DOM
+      const entry = document.createElement('div');
+      entry.className = 'entry';
+      entry.innerHTML = `
+        <h2>Anomaly #${anomaly.number}: ${anomaly.name}</h2>
+        <div class="classification" style="background: ${getBackground(anomaly.classification)}">${anomaly.classification.toUpperCase()} CONTAINMENT</div>
+        <p>${anomaly.description}</p>
+      `;
+      document.querySelector('.container').insertBefore(entry, document.querySelector('.create-anomaly'));
+      // Clear input fields
+      document.getElementById('anomalyNumber').value = '';
+      document.getElementById('anomalyName').value = '';
+      document.getElementById('anomalyDescription').value = '';
+    }
+    
+    function getBackground(classification) {
+      const backgrounds = {
+        safe: 'rgba(0, 255, 0, 0.1)',
+        caution: 'rgba(255, 165, 0, 0.1)',
+        medium: 'rgba(255, 165, 0, 0.1)',
+        risk: 'rgba(0, 150, 255, 0.1)',
+        hard: 'rgba(255, 0, 0, 0.2)'
+      };
+      return backgrounds[classification];
+    }
+    
+    function showDetails(id) {
+      if (id === '661' || id === '662') {
+        alert('WARNING: ACCESSING FILE FOR ANOMALY #661 OR #662 - BALANCED CONTAINMENT FILES. PROCEED WITH CAUTION.');
+        document.body.innerHTML += `
+          <div class="balanced-warning">
+            NOTICE: Review of these files prohibited without Level 5 clearance.
+            Any attempt to facilitate interaction between subjects will result in immediate termination.
+          </div>
+        `;
+        setTimeout(() => {
+          document.querySelector('.balanced-warning').remove();
+        }, 5000);
+      }
+      if (id === '113') {
+        alert('WARNING: ACCESSING FILE FOR ANOMALY #113 - THE FATE CALIBRATOR\nSTRICT USAGE LIMITS IN EFFECT\nVIOLATION OF THREE-USE LIMIT WILL RESULT IN IMMEDIATE TERMINATION');
+        return;
+      }
+      if (id === '1503') {
+        alert('WARNING: ACCESSING FILE FOR ANOMALY #1503 - THE GUIDER OF THE NIGHT\nCAUTION: Entity known to create darkness to fulfill its primary directive.\nManagement personnel required for containment procedures.');
+        return;
+      }
+      if (id === '001') {
+        alert('ERROR: FILE CORRUPTED - UNABLE TO DISPLAY DETAILS');
+        document.body.style.animation = "glitch 0.3s infinite";
+        setTimeout(() => {
+          document.body.style.animation = "";
+        }, 1000);
+        return;
+      }
+      if (!authenticated) {
+        const password = prompt("Enter security clearance code:");
+        if (password === "123456") {
+          authenticated = true;
+          alert("Access granted. Welcome, Agent.");
+        } else {
+          alert("ACCESS DENIED. Security protocols engaged.");
+          document.body.style.animation = "glitch 0.3s linear";
+          return;
+        }
+      }
+      if (id === '1504') {
+        alert('WARNING: ACCESSING FILE FOR ANOMALY #1504 - "떠나라"\nEXTREME CAUTION: Reality destabilization hazard detected');
+        
+        // Create fake interface element
+        const button = document.createElement('div');
+        button.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: metallic silver; padding: 20px; border-radius: 50%; cursor: pointer; z-index: 1000; border: 2px solid black;';
+        button.textContent = '떠나라';
+        
+        // Add click handler that triggers reality break effect
+        button.addEventListener('click', () => {
+            document.body.classList.add('reality-break');
+            setTimeout(() => {
+                window.location.href = 'about:blank';
+            }, 500);
+        });
+        
+        document.body.appendChild(button);
+        return;
+      }
+      if (id === '1505') {
+        alert('WARNING: ACCESSING FILE FOR ANOMALY #1505 - THE HELPING HAND\nCAUTION: Entity demonstrates extreme behavioral variance.\nNO DIRECT CONTACT AUTHORIZED POST-TRANSFORMATION');
+        
+        // Create fake interface showing transformation
+        const helpText = document.createElement('div');
+        helpText.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            background: white;
+            padding: 20px; 
+            z-index: 1000; 
+            transition: all 2s;
+        `;
+        helpText.textContent = 'Would you like assistance today?';
+        
+        document.body.appendChild(helpText);
+        
+        setTimeout(() => {
+            helpText.style.color = 'red';
+            helpText.style.background = 'black';
+            helpText.textContent = 'TOO LATE TO RUN';
+            document.body.style.animation = 'glitch 0.3s infinite';
+            
+            setTimeout(() => {
+                helpText.remove();
+                document.body.style.animation = '';
+            }, 2000);
+        }, 3000);
+        
+        return;
+      }
+      if (id === '505') {
+        alert('WARNING: ACCESSING FILE FOR ANOMALY #505 - THE CURSE HEALER\nNOTE: Entity demonstrates exceptional empathy and healing abilities.\nSingle subject interaction protocols in effect.');
+        
+        // Create gentle white glow effect
+        const healingLight = document.createElement('div');
+        healingLight.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent);
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 2s;
+        `;
+        
+        document.body.appendChild(healingLight);
+        
+        // Fade in and out effect
+        setTimeout(() => {
+            healingLight.style.opacity = '1';
+            setTimeout(() => {
+                healingLight.style.opacity = '0';
+                setTimeout(() => healingLight.remove(), 2000);
+            }, 2000);
+        }, 100);
+        
+        return;
+      }
+      if (id === '1508') {
+        alert('WARNING: ACCESSING FILE FOR ANOMALY #1508 - THE GAZE OF NO RETURN\nEXTREME COGNITOHAZARD WARNING\nDIRECT OBSERVATION PROHIBITED');
+        
+        // Create visual distortion effect
+        const distortion = document.createElement('div');
+        distortion.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: repeating-conic-gradient(
+                from 0deg,
+                #000 0deg 10deg,
+                #fff 10deg 20deg
+            );
+            animation: spin 2s linear infinite;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: 1000;
+        `;
+        
+        document.body.appendChild(distortion);
+        
+        // Add spinning animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: translate(-50%, -50%) rotate(0deg); }
+                to { transform: translate(-50%, -50%) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Screen distortion effect
+        document.body.style.animation = 'glitch 0.1s infinite';
+        
+        setTimeout(() => {
+            distortion.remove();
+            style.remove();
+            document.body.style.animation = '';
+            alert('WARNING: VISUAL CORRUPTION DETECTED\nFORCED TERMINATION OF DISPLAY');
+        }, 3000);
+        
+        return;
+      }
+    }
+    
+    function getRiskLevel(entry) {
+      const classification = entry.querySelector('.classification').textContent;
+      if (classification.includes('SAFE')) return 'safe';
+      if (classification.includes('CAUTION')) return 'caution';
+      if (classification.includes('MEDIUM')) return 'medium';
+      if (classification.includes('RISK')) return 'risk';
+      if (classification.includes('HARD')) return 'hard';
+      return 'unknown';
+    }
+    
+    function filterAnomalies(riskLevel) {
+      const entries = document.querySelectorAll('.entry');
+      entries.forEach(entry => {
+        if (riskLevel === 'all' || getRiskLevel(entry) === riskLevel) {
+          entry.classList.remove('hidden');
+        } else {
+          entry.classList.add('hidden');
+        }
+      });
+    }
+    
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+      } else {
+        bgMusic.pause();
+      }
+    }
+    
+    const bgMusic = document.getElementById('bgMusic');
+    bgMusic.volume = 0.3;
+    bgMusic.play().catch(err => console.log('Audio autoplay blocked by browser'));
+    let authenticated = false;
+    
+    document.body.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play().catch(err => console.log('Audio playback failed:', err));
+      }
+    }, {
+      once: true
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const entries = document.querySelectorAll('.entry');
+      entries.forEach((entry, index) => {
+        entry.style.opacity = '0';
+        setTimeout(() => {
+          entry.style.transition = 'opacity 0.5s';
+          entry.style.opacity = '1';
+        }, index * 500);
+      });
+      const riskLevelSelect = document.getElementById('riskLevel');
+      riskLevelSelect.addEventListener('change', e => {
+        filterAnomalies(e.target.value);
+      });
+      const anomaly001 = document.querySelector('.entry[onclick="showDetails(\'001\')"]');
+      if (anomaly001) {
+        setInterval(() => {
+          anomaly001.style.opacity = Math.random() > 0.5 ? '0' : '0.5';
+        }, 100);
+      }
+    });
+    </script>
+    <script>
+    function toggleMusic() {
+      var music = document.getElementById("bgMusic");
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
+    </script>
+    </body>
+    </html>
