@@ -57,25 +57,43 @@
         /* Grid Layout for Main Sections */
         .grid-container {
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            gap: 30px;
+            grid-template-columns: .8fr 1.2fr .8fr;
+            gap: 20px;
             padding: 20px;
-            height: 100vh;
+            height: auto;
             align-items: center;
+            min-height: 100vh;
         }
 
         /* Section Styling */
         .section {
-            position: relative;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.4); /* Transparent Background */
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 60px rgba(0, 255, 0, 0.4); /* Neon Glow */
-            display: flex; /* Use flexbox for consistent alignment */
-            flex-direction: column; /* Stack the content vertically */
-             gap: 20px; /* Space between boxes */
-        }
+    position: relative;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 60px rgba(0, 255, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    gap: 20px;
+}
+
+/* Add the new scrollable-section style after this */
+.scrollable-section {
+    max-height: 60vh;
+    overflow-y: auto;
+    width: 90%;
+    padding: 20px;
+    border: 2px solid #00ff00;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+}
+
 
         /* Box Styling */
 .box {
@@ -138,6 +156,38 @@
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
         }
 
+        .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start; /* Align content at the top */
+    width: 100%; /* Ensure full width */
+    max-height: 80vh; /* Limit height to viewport (adjust as needed) */
+    overflow: hidden; /* Prevent overflowing content */
+}
+
+.scrollable-section {
+    max-height: 60vh; /* Allow this section to take up to 60% of viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    width: 90%; /* Adjust width to fit */
+    padding: 20px; /* Add padding for aesthetics */
+    border: 2px solid #00ff00; /* Add a visible border */
+    background-color: rgba(0, 0, 0, 0.8); /* Transparent black background */
+    border-radius: 10px; /* Rounded corners */
+}
+
+/* Style the scrollbars (optional) */
+.scrollable-section::-webkit-scrollbar {
+    width: 8px;
+}
+.scrollable-section::-webkit-scrollbar-thumb {
+    background: #00ff00; /* Neon green scrollbar */
+    border-radius: 5px;
+}
+.scrollable-section::-webkit-scrollbar-thumb:hover {
+    background: #00cc00;
+}
+
         /* Footer Styling */
 .footer {
     position: fixed; /* Sticks to the bottom of the page */
@@ -153,7 +203,7 @@
 .box {
     background-color: rgba(0, 0, 0, 0.8);
     border: 2px solid lime;
-    border-radius: 10px;
+    border-radius: 0px;
     padding: 15px;
     box-shadow: 0 0 20px lime;
 }
@@ -168,7 +218,7 @@
 .box video, .box audio {
     width: 100%;
     border: 2px solid lime;
-    border-radius: 5px;
+    border-radius: 0px;
     box-shadow: 0 0 15px lime;
 }
 
@@ -199,31 +249,47 @@
         <!-- Center Section -->
         <div class="section">
             <h1>Dimension Explorer Service (D.E.S.)</h1>
+            <<div class="section scrollable-section" style="width: 60%; max-width: 400px;"> <!-- Added width control -->
             <div class="button-list">
-                <a href="transform.html" class="button">Fractality</a>
-                <a href="entropy.html" class="button">Psychoactive Entropy</a>
-                <a href="iterate.html" class="button">Iterate Reality</a>
-                <a href="cosmic.html" class="button">Cosmic Spaces</a>
-                <a href="glitchy.html" class="button">Glitchy message</a>
-                <a href="neuroreality.html" class="button">Neuroreality</a>
-                <a href="psyched.html" class="button">Psyched ride</a>
-                <a href="ripples.html" class="button">Soft ripples</a>
-                <a href="planet.html" class="button">Planet E</Em></a>
+                <a href="/DES/transform.html" class="button">Fractality</a>
+                <a href="/DES/jazzdimension.html" class="button">Jazzdimension</a>
+                <a href="/glitch_by_SLAY/index.html" class="button">Psychoactive Entropy</a>
+                <a href="/DES/iterate.html" class="button">Iterate Reality</a>
+                <a href="/DES/cosmic.html" class="button">Cosmic Spaces</a>
+                <a href="/DES/quantum.html" class="button">Quantum Shaggy</a>
+                <a href="/DES/brainmelt.html" class="button">Fractum</a>
+                <a href="/DES/glitchy.html" class="button">Glitchy message</a>
+                <a href="/DES/neuroreality.html" class="button">Neuroreality</a>
+                <a href="/DES/psyched.html" class="button">Psyched ride</a>
+                <a href="/DES/ripples.html" class="button">Soft ripples</a>
+                <a href="/DES/planet.html" class="button">Planet E</Em></a>
+                <a href="/super_mario_64_speed_run_edition_by_Monkey_man/index.html" class="button">Mario</Em></a>
             </div>
         </div>
+    </div>
 
       <!-- Right Section -->
-      <div class="box">
-        <h3>Digital Samsaras</h3>
-        <video controls>
-            <iframe src="https://www.youtube.com/embed/XzaZOPIYA-Q" allowfullscreen></iframe>
-            Your browser does not support the video tag.
-        </video>
-        <h3>Sounds sculptured in space</h3>
-        <audio controls>
-            <source src="Blue Beryll.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+      <div class="section">
+            <h3>Digital Samsaras</h3>
+            <div class="box">
+            <iframe src="https://drive.google.com/file/d/1rpa77ZHDyOwN5h4tx2UpOQiaYwgZ2xI4/preview" 
+                width="100%" 
+                height="100%" 
+                allow="autoplay" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="box">
+            <div class="box">
+                <h3>Sounds sculptured in space</h3>
+                <iframe width="100%" 
+                    height="100" 
+                    scrolling="no" 
+                    frameborder="no" 
+                    allow="autoplay" 
+                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/63156685&color=%2300ff00&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false">
+                </iframe>
+            </div>
     </div>
 </div>
     </div>
