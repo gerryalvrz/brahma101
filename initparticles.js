@@ -63,6 +63,14 @@ particlesJS('particles-js', {
                 enable: true,
                 mode: 'push' // Adds more particles on click
             },
+            ontouchstart: {
+                enable: true,
+                mode: 'repulse'
+            },
+            ontouchmove: {
+                enable: true,
+                mode: 'repulse'
+            },
             resize: true // Adjusts particles to canvas size
         },
         modes: {

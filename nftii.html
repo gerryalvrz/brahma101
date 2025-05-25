@@ -55,6 +55,8 @@
         height: 100vh;
         background-color: rgb(var(--carousel-bg-color-rgb));
         overflow: hidden;
+        position: fixed;
+        width: 100%;
     }
     
     /*
@@ -69,6 +71,10 @@
         perspective-origin: var(--carousel-3d-perspective-origin);
         width: var(--_diameter);
         height: var(--_diameter);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
     
     @media only screen and (max-width: 48rem) {
@@ -255,6 +261,51 @@
     .carousel .carousel-item-wrapper:has(.carousel-item:hover) .carousel-ground {
         opacity: 0.75;
     }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow: auto;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%;
+        max-height: 90vh;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid #00ff00;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+        pointer-events: auto;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #00ff00;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 1001;
+        pointer-events: auto;
+    }
+
+    .close-button:hover {
+        color: #fff;
+        text-shadow: 0 0 10px #00ff00;
+    }
     </style>
     
     </head>
@@ -268,38 +319,38 @@
         
                 <ul class="carousel-item-wrapper" style="--_num-elements: 11">
         
-                    <li class="carousel-item" style="--_index: 1; --_image-url: url('./psyberpunk00001.png')">
-                        <a href="./psyberpunk00001.png" target="_blank">Psyberpunk 1</a>
+                    <li class="carousel-item" style="--_index: 1; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr1_mv72bf.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr1_mv72bf.png')">Psyberpunk 1</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 2; --_image-url: url('./psyberpunk00002.png')">
-                        <a href="./psyberpunk00002.png" target="_blank">Psyberpunk 2</a>
+                    <li class="carousel-item" style="--_index: 2; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr2_pksely.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr2_pksely.png')">Psyberpunk 2</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 3; --_image-url: url('./psyberpunk00003.png')">
-                        <a href="./psyberpunk00003.png" target="_blank">Psyberpunk 3</a>
+                    <li class="carousel-item" style="--_index: 3; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr4_rqryj5.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr4_rqryj5.png')">Psyberpunk 3</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 4; --_image-url: url('./psyberpunk00004.png')">
-                        <a href="./psyberpunk00004.png" target="_blank">Psyberpunk 4</a>
+                    <li class="carousel-item" style="--_index: 4; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr3_yrrfvl.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748165413/cr3_yrrfvl.png')">Psyberpunk 4</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 5; --_image-url: url('./psyberpunk00005.png')">
-                        <a href="./psyberpunk00005.png" target="_blank">Psyberpunk 5</a>
+                    <li class="carousel-item" style="--_index: 5; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr5_hysaxz.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr5_hysaxz.png')">Psyberpunk 5</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 6; --_image-url: url('./psyberpunk00006.png')">
-                        <a href="./psyberpunk00006.png" target="_blank">Psyberpunk 6</a>
+                    <li class="carousel-item" style="--_index: 6; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr8_gkuwda.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr8_gkuwda.png')">Psyberpunk 6</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 7; --_image-url: url('./psyberpunk00007.png')">
-                        <a href="./psyberpunk00007.png" target="_blank">Psyberpunk 7</a>
+                    <li class="carousel-item" style="--_index: 7; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr7_rquo9a.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr7_rquo9a.png')">Psyberpunk 7</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 8; --_image-url: url('./psyberpunk00008.png')">
-                        <a href="./psyberpunk00008.png" target="_blank">Psyberpunk 8</a>
+                    <li class="carousel-item" style="--_index: 8; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168505/gerryalvrz_zombie_like_dressed_in_cyberpunk_and_metalhead_clo_cafe7dc3-14ff-48da-8082-c6f569e8be0e_1_piq5iu.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168505/gerryalvrz_zombie_like_dressed_in_cyberpunk_and_metalhead_clo_cafe7dc3-14ff-48da-8082-c6f569e8be0e_1_piq5iu.png')">Psyberpunk 8</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 9; --_image-url: url('./psyberpunk00009.png')">
-                        <a href="./psyberpunk00009.png" target="_blank">Psyberpunk 9</a>
+                    <li class="carousel-item" style="--_index: 9; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr9_yzvr4n.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr9_yzvr4n.png')">Psyberpunk 9</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 10; --_image-url: url('./psyberpunk00010.png')">
-                        <a href="./psyberpunk00010.png" target="_blank">Psyberpunk 10</a>
+                    <li class="carousel-item" style="--_index: 10; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr6_ofhzge.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/cr6_ofhzge.png')">Psyberpunk 10</a>
                     </li>
-                    <li class="carousel-item" style="--_index: 11; --_image-url: url('./psyberpunk00011.png')">
-                        <a href="./psyberpunk00011.png" target="_blank">Psyberpunk 11</a>
+                    <li class="carousel-item" style="--_index: 11; --_image-url: url('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/gerryalvrz_neurons_light_background_drawing_style_high_detail_ef54357f-454c-4b5d-96ca-821d7a146316_3_wo06su.png')">
+                        <a href="javascript:void(0)" onclick="openModal('https://res.cloudinary.com/dsz1l1f7p/image/upload/v1748168504/gerryalvrz_neurons_light_background_drawing_style_high_detail_ef54357f-454c-4b5d-96ca-821d7a146316_3_wo06su.png')">Psyberpunk 11</a>
                     </li>
 
                     <li class="carousel-ground"></li>
@@ -309,6 +360,13 @@
             </div>
         
         </div>
+
+        <!-- Modal -->
+        <div id="imageModal" class="modal">
+            <span class="close-button">&times;</span>
+            <img class="modal-content" id="modalImage">
+        </div>
+
     <script>
     // JavaScript to handle carousel rotation direction
     document.addEventListener('DOMContentLoaded', function() {
@@ -343,6 +401,47 @@
                 carouselItemWrapper.style.animationPlayState = 'running';
             });
         });
+    });
+
+    // Modal functionality
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const closeButton = document.querySelector('.close-button');
+
+    function openModal(imageUrl) {
+        modal.style.display = "block";
+        modalImg.src = imageUrl;
+        // Pause carousel when modal is open
+        carouselRotationDirection.style.animationPlayState = 'paused';
+        carouselItemWrapper.style.animationPlayState = 'paused';
+    }
+
+    // Close modal when clicking the close button
+    closeButton.onclick = function() {
+        modal.style.display = "none";
+        // Resume carousel when modal is closed
+        carouselRotationDirection.style.animationPlayState = 'running';
+        carouselItemWrapper.style.animationPlayState = 'running';
+    }
+
+    // Close modal when clicking outside the image
+    modal.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            // Resume carousel when modal is closed
+            carouselRotationDirection.style.animationPlayState = 'running';
+            carouselItemWrapper.style.animationPlayState = 'running';
+        }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape" && modal.style.display === "block") {
+            modal.style.display = "none";
+            // Resume carousel when modal is closed
+            carouselRotationDirection.style.animationPlayState = 'running';
+            carouselItemWrapper.style.animationPlayState = 'running';
+        }
     });
     </script>
     </body>
