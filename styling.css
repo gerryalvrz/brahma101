@@ -467,3 +467,37 @@ body, html {
             background: darkred;
           }
           
+.back-to-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 20, 0, 0.8);
+    color: #0f0;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    border: 2px solid #0f0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+    z-index: 1000;
+    font-family: 'VT323', monospace;
+}
+
+.back-to-menu:hover {
+    background: rgba(0, 40, 0, 0.9);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    text-shadow: 0 0 10px #0f0;
+}
+
+@media screen and (max-width: 768px) {
+    .back-to-menu {
+        top: 10px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+          
