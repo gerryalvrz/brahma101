@@ -499,27 +499,22 @@ body, html {
         padding: 8px 15px;
         font-size: 14px;
     }
-}
-          
-/* Full-height sections with scroll snapping */
-.main-content {
-    height: 100vh;
-    overflow-y: scroll;
-    scroll-snap-type: y proximity; /* Changed from mandatory to proximity */
-}
-.section {
-    min-height: 100vh;
-    scroll-snap-align: start;
-    padding: 20px;
-    justify-content: center;
-    box-sizing: border-box;
-}
-/* Adjust scrollable content */
-.scrollable-section {
-    max-height: 85vh; /* Increased from 70vh to 85vh */
-    width: 90%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 15px;
-}
-          
+    
+    /* Full-height sections with scroll snapping - MOBILE ONLY */
+    .main-content {
+        height: 100vh;
+        overflow-y: scroll;
+        scroll-snap-type: y proximity; /* Changed from mandatory to proximity */
+    }
+    .section {
+        min-height: 100vh;
+        scroll-snap-align: start;
+        padding: 20px;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+    /* Adjust scrollable content - MOBILE ONLY */
+    .scrollable-section {
+        max-height: 85vh; /* Increased from 70vh to 85vh */
+        width: 90%;
+        max-width: 600px;

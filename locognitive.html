@@ -85,8 +85,8 @@
 
         /* Scrollable Section */
         .scrollable-section {
-            /* max-height: 60vh; */ /* Removed */
-            /* overflow-y: auto; */ /* Removed */
+            max-height: 60vh; /* Restored */
+            overflow-y: auto; /* Restored */
             width: 90%;
             padding: 15px;
             border: 2px solid #00ff00;
@@ -208,9 +208,9 @@
     }
     /* Full-height sections with scroll snapping */
     .main-content {
-        /* height: 100vh; */ /* Removed */
-        /* overflow-y: scroll; */ /* Removed */
-        /* scroll-snap-type: y mandatory; */ /* Removed */
+        height: 100vh; /* Restored */
+        overflow-y: scroll; /* Restored */
+        scroll-snap-type: y proximity; /* Restored - using proximity instead of mandatory for better UX */
     }
     .section {
         min-height: 100vh;
@@ -221,7 +221,7 @@
     }
     /* Adjust scrollable content */
     .scrollable-section {
-        /* max-height: 70vh; */ /* Removed */
+        max-height: 70vh; /* Restored */
         width: 90%;
         max-width: 600px;
         margin: 0 auto;

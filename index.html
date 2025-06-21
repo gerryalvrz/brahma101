@@ -30,7 +30,7 @@
 
     <header>
         <h1>brahma101.eth</h1>
-        <p class="typewriter">The Art of Creation</p>
+        <p class="typewriter">The Art of (r)evolution</p>
     </header>
 
     <!-- Buttons replacing the list links -->
@@ -54,7 +54,57 @@
     </script>
 
     <section id="narrative">
-        <h2>expect (r)evolution</h2>
+        <h2><span class="fixed-text">expect</span> <span id="alternating-text" class="typewriter"></span></h2>
+        <style>
+            .typewriter {
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap;
+                border-right: 2px solid #0f0;
+                animation: blink 0.75s step-end infinite;
+            }
+
+            @keyframes blink {
+                from, to { border-color: transparent }
+                50% { border-color: #0f0 }
+            }
+
+            @keyframes typing {
+                from { width: 0 }
+                to { width: 100% }
+            }
+
+            @keyframes deleting {
+                from { width: 100% }
+                to { width: 0 }
+            }
+        </style>
+        <script>
+            const textElement = document.getElementById('alternating-text');
+            const texts = ["(r)evolution", "chaos"];
+            let currentIndex = 0;
+
+            function typeWriter(text, isDeleting = false) {
+                const speed = 100; // typing speed in milliseconds
+                const currentText = textElement.textContent;
+                
+                if (!isDeleting && currentText.length < text.length) {
+                    textElement.textContent = text.substring(0, currentText.length + 1);
+                    setTimeout(() => typeWriter(text, false), speed);
+                } else if (isDeleting && currentText.length > 0) {
+                    textElement.textContent = text.substring(0, currentText.length - 1);
+                    setTimeout(() => typeWriter(text, true), speed);
+                } else if (!isDeleting && currentText.length === text.length) {
+                    setTimeout(() => typeWriter(text, true), 2000); // pause before deleting
+                } else if (isDeleting && currentText.length === 0) {
+                    currentIndex = (currentIndex + 1) % texts.length;
+                    setTimeout(() => typeWriter(texts[currentIndex], false), 500); // pause before typing next word
+                }
+            }
+
+            // Start the typewriter effect
+            typeWriter(texts[currentIndex]);
+        </script>
         <p>Weaving the unseen threads of reality into manifested forms.</p>
     </section>
     <footer>
