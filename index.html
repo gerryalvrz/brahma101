@@ -30,7 +30,41 @@
 
     <header>
         <h1>brahma101.eth</h1>
-        <p class="typewriter">The Art of (r)evolution</p>
+        <p class="art-of-container"><span class="fixed-text">The Art of&nbsp;</span><span id="art-of-text" class="typewriter"></span></p>
+        <style>
+            .art-of-container {
+                display: flex;
+                align-items: baseline;
+                justify-content: center;
+                font-size: 1.2rem; /* Or match your existing styles */
+                margin: 10px 0;
+            }
+        </style>
+        <script>
+            const artOfTextElement = document.getElementById('art-of-text');
+            const artOfTexts = ["(r)evolution", "creation"];
+            let artOfCurrentIndex = 0;
+
+            function typeWriterArt(text, isDeleting = false) {
+                const speed = 100; // typing speed in milliseconds
+                const currentText = artOfTextElement.textContent;
+                
+                if (!isDeleting && currentText.length < text.length) {
+                    artOfTextElement.textContent = text.substring(0, currentText.length + 1);
+                    setTimeout(() => typeWriterArt(text, false), speed);
+                } else if (isDeleting && currentText.length > 0) {
+                    artOfTextElement.textContent = text.substring(0, currentText.length - 1);
+                    setTimeout(() => typeWriterArt(text, true), speed);
+                } else if (!isDeleting && currentText.length === text.length) {
+                    setTimeout(() => typeWriterArt(text, true), 2000); // pause before deleting
+                } else if (isDeleting && currentText.length === 0) {
+                    artOfCurrentIndex = (artOfCurrentIndex + 1) % artOfTexts.length;
+                    setTimeout(() => typeWriterArt(artOfTexts[artOfCurrentIndex], false), 500); // pause before typing next word
+                }
+            }
+            // Start the typewriter effect for "The Art of..."
+            typeWriterArt(artOfTexts[artOfCurrentIndex]);
+        </script>
     </header>
 
     <!-- Buttons replacing the list links -->
@@ -54,8 +88,13 @@
     </script>
 
     <section id="narrative">
-        <h2><span class="fixed-text">expect</span> <span id="alternating-text" class="typewriter"></span></h2>
+        <h2><span class="fixed-text">expect&nbsp;</span><span id="alternating-text" class="typewriter"></span></h2>
         <style>
+            #narrative h2 {
+                display: flex;
+                align-items: baseline;
+                justify-content: center;
+            }
             .typewriter {
                 display: inline-block;
                 overflow: hidden;
@@ -81,7 +120,7 @@
         </style>
         <script>
             const textElement = document.getElementById('alternating-text');
-            const texts = ["(r)evolution", "chaos"];
+            const texts = [ "chaos", "(r)evolution"];
             let currentIndex = 0;
 
             function typeWriter(text, isDeleting = false) {

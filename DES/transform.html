@@ -24,7 +24,7 @@
     color: #0f0; /* Green glow aesthetic */
     padding: 20px;
     border-radius: 10px;
-    display: none;
+    display: none; /* Explicitly hidden by default */
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 0 15px #0f0; /* Glow effect */
@@ -53,7 +53,7 @@
   #randomizeButton {
     position: absolute;
     bottom: 20px;
-    left: 1280px;
+    left: 20px; /* Changed from 1280px to 20px for mobile compatibility */
     background: rgba(0, 0, 0, 0.85); /* Darker button background */
     color: #0f0; /* Green text */
     border: 1px solid #0f0;
@@ -139,6 +139,59 @@
     transform: scale(1.1); /* Slight zoom */
   }
   
+  /* Mobile Responsive Design */
+  @media screen and (max-width: 768px) {
+    #shaderContainer {
+      top: 100px; /* More space for buttons */
+      bottom: 80px; /* Space for bottom button */
+      left: 10px;
+      right: 10px; /* Full width on mobile */
+    }
+    
+    #toggleMenu {
+      top: 20px;
+      right: 10px;
+      padding: 12px 15px;
+      font-size: 14px;
+    }
+    
+    #randomizeButton {
+      bottom: 20px;
+      left: 10px;
+      right: 10px; /* Full width button on mobile */
+      padding: 12px 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    #customizeMenu {
+      top: 10px;
+      right: 10px;
+      left: 10px; /* Full width menu on mobile */
+      max-height: 70vh;
+      padding: 15px;
+    }
+    
+    .color-picker {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+    
+    .color-picker input[type="color"] {
+      margin-bottom: 5px;
+    }
+    
+    input[type="range"] {
+      margin: 8px 0;
+    }
+    
+    label {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  }
+  
 
   </style>
   </head>
@@ -156,7 +209,7 @@
     top: 50px;
     bottom: 20px;
     left: 20px;
-    right: 300px; /* Leave space on the right for buttons */
+    right: 20px; /* Changed from 300px to 20px for better mobile compatibility */
     background: rgba(0, 50, 0, 0.85); /* Semi-transparent green background */
     border: 2px solid #0f0; /* Glowing green border */
     border-radius: 10px; /* Rounded corners */
@@ -448,11 +501,12 @@
     const randomizeButton = document.getElementById('randomizeButton');
   
     toggleMenu.addEventListener('click', () => {
-      customizeMenu.style.display = customizeMenu.style.display === 'none' ? 'block' : 'none';
+      const isVisible = customizeMenu.style.display === 'block';
+      customizeMenu.style.display = isVisible ? 'none' : 'block';
     });
     // Close the menu using the close button
     closeMenuButton.addEventListener('click', () => {
-  customizeMenu.style.display = 'none';
+      customizeMenu.style.display = 'none';
     });
 
 
