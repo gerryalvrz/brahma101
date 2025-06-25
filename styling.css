@@ -7,7 +7,7 @@ body {
     background: linear-gradient(135deg, #0f0c29, #032B2D, #24243e);
     font-family: 'Courier New', monospace;
     color: #00ff00;
-    overflow: hidden;
+    overflow: auto; /* Changed from hidden to auto to allow scrolling */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -68,8 +68,8 @@ body {
     left: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    z-index: 1; /* Changed from -1 to 1 to ensure proper interaction */
-    pointer-events: auto; /* Ensures interaction with the particles layer */
+    z-index: -1; /* Changed to negative to put particles behind content */
+    pointer-events: none; /* Don't block clicks on buttons */
     touch-action: manipulation; /* Improves touch interaction on mobile */
 }
 

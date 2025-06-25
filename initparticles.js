@@ -13,17 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
     particlesJS('particles-js', {
         particles: {
             number: {
-                value: isMobile ? 50 : 100, // Fewer particles on mobile for better performance
+                value: isMobile ? 100 : 200, // More particles on desktop, fewer on mobile
                 density: {
                     enable: true,
-                    value_area: 800
+                    value_area: 800 // Area covered by particles
                 }
             },
             color: {
-                value: '#00ff00'
+                value: '#00ff00' // Color of particles (neon green for Matrix theme)
             },
             shape: {
-                type: 'circle',
+                type: 'circle', // Shape of particles
                 stroke: {
                     width: 0,
                     color: '#000000'
@@ -31,28 +31,28 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             opacity: {
                 value: 0.5,
-                random: true,
+                random: true, // Makes opacity of particles slightly varied
                 anim: {
                     enable: false
                 }
             },
             size: {
                 value: 3,
-                random: true,
+                random: true, // Makes particles of slightly different sizes
                 anim: {
                     enable: false
                 }
             },
             line_linked: {
                 enable: true,
-                distance: 150,
-                color: '#00ff00',
+                distance: 150, // Distance between linked particles
+                color: '#00ff00', // Link color
                 opacity: 0.4,
                 width: 1
             },
             move: {
                 enable: true,
-                speed: isMobile ? 1 : 2, // Slower on mobile
+                speed: isMobile ? 1 : 3, // Slower on mobile, faster on desktop
                 direction: 'none',
                 random: false,
                 straight: false,
@@ -64,29 +64,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         interactivity: {
-            detect_on: 'canvas', // Use canvas instead of window for better compatibility
+            detect_on: 'window', // Changed back to window for better compatibility
             events: {
                 onhover: {
-                    enable: !isMobile, // Disable hover on mobile
-                    mode: 'repulse'
+                    enable: true,
+                    mode: 'repulse' // Behavior of particles on hover
                 },
                 onclick: {
                     enable: true,
-                    mode: 'push'
+                    mode: 'push' // Adds more particles on click
                 },
                 ontouchstart: {
-                    enable: isMobile, // Enable touch on mobile
+                    enable: true,
                     mode: 'repulse'
                 },
                 ontouchmove: {
-                    enable: isMobile, // Enable touch on mobile
+                    enable: true,
                     mode: 'repulse'
                 },
                 ontouchend: {
-                    enable: isMobile, // Enable touch on mobile
+                    enable: true,
                     mode: 'repulse'
                 },
-                resize: true
+                resize: true // Adjusts particles to canvas size
             },
             modes: {
                 grab: {
@@ -103,20 +103,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     speed: 3
                 },
                 repulse: {
-                    distance: isMobile ? 50 : 100 // Shorter distance on mobile
+                    distance: isMobile ? 100 : 150 // Shorter distance on mobile
                 },
                 push: {
-                    particles_nb: isMobile ? 2 : 4 // Fewer particles on mobile
+                    particles_nb: isMobile ? 2 : 6 // Fewer particles on mobile, more on desktop
                 },
                 remove: {
                     particles_nb: 2
                 }
             }
         },
-        retina_detect: true
+        retina_detect: true // Ensures particles look sharp on high-DPI screens
     });
 
-    console.log('Particles initialized with mobile optimization:', isMobile);
+    console.log('Particles initialized:', isMobile ? 'Mobile' : 'Desktop', 'with', isMobile ? '50' : '150', 'particles');
 });
 
 // Fallback initialization if DOMContentLoaded already fired
