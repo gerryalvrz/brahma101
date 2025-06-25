@@ -7,7 +7,7 @@ body {
     background: linear-gradient(135deg, #0f0c29, #032B2D, #24243e);
     font-family: 'Courier New', monospace;
     color: #00ff00;
-    overflow: hidden;
+    overflow: auto; /* Changed from hidden to auto to allow scrolling */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -518,3 +518,5 @@ body, html {
         max-height: 85vh; /* Increased from 70vh to 85vh */
         width: 90%;
         max-width: 600px;
+    }
+}
