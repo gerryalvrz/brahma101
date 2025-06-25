@@ -68,8 +68,9 @@ body {
     left: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    z-index: -1; /* Puts it behind all other content */
-    pointer-events: auto; /* Prevents interaction with the particles layer */
+    z-index: 1; /* Changed to positive to capture events */
+    pointer-events: auto; /* Changed to auto to capture touch events */
+    touch-action: pan-y; /* Allow vertical scroll but capture touch for particles */
 }
 
 

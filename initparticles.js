@@ -53,7 +53,7 @@ particlesJS('particles-js', {
         }
     },
     interactivity: {
-        detect_on: 'window',
+        detect_on: 'canvas',
         events: {
             onhover: {
                 enable: true,
@@ -68,6 +68,10 @@ particlesJS('particles-js', {
                 mode: 'repulse'
             },
             ontouchmove: {
+                enable: true,
+                mode: 'repulse'
+            },
+            ontouchend: {
                 enable: true,
                 mode: 'repulse'
             },
@@ -88,7 +92,7 @@ particlesJS('particles-js', {
                 speed: 3
             },
             repulse: {
-                distance: 100
+                distance: 150
             },
             push: {
                 particles_nb: 4
