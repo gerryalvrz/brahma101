@@ -68,8 +68,9 @@ body {
     left: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    z-index: -1; /* Puts it behind all other content */
-    pointer-events: auto; /* Prevents interaction with the particles layer */
+    z-index: 1; /* Changed from -1 to 1 to ensure proper interaction */
+    pointer-events: auto; /* Ensures interaction with the particles layer */
+    touch-action: manipulation; /* Improves touch interaction on mobile */
 }
 
 
@@ -518,3 +519,5 @@ body, html {
         max-height: 85vh; /* Increased from 70vh to 85vh */
         width: 90%;
         max-width: 600px;
+    }
+}
