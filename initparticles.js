@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         interactivity: {
-            detect_on: 'window', // Changed back to window for better compatibility
+            detect_on: 'window', // Use window for better compatibility
             events: {
                 onhover: {
                     enable: true,
@@ -118,46 +118,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('Particles initialized:', isMobile ? 'Mobile' : 'Desktop', 'with', isMobile ? '100' : '200', 'particles');
     
-    // Mobile-specific touch handler
-    if (isMobile) {
-        setTimeout(function() {
-            const particlesContainer = document.getElementById('particles-js');
-            const canvas = particlesContainer.querySelector('canvas');
-            
-            if (canvas) {
-                // Force touch events on mobile
-                canvas.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    // Trigger particle interaction
-                    const touch = e.touches[0];
-                    const rect = canvas.getBoundingClientRect();
-                    const x = touch.clientX - rect.left;
-                    const y = touch.clientY - rect.top;
-                    
-                    // Simulate mouse event for particles
-                    const mouseEvent = new MouseEvent('mousemove', {
-                        clientX: touch.clientX,
-                        clientY: touch.clientY,
-                        bubbles: true
-                    });
-                    canvas.dispatchEvent(mouseEvent);
-                }, { passive: false });
-                
-                canvas.addEventListener('touchmove', function(e) {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    const mouseEvent = new MouseEvent('mousemove', {
-                        clientX: touch.clientX,
-                        clientY: touch.clientY,
-                        bubbles: true
-                    });
-                    canvas.dispatchEvent(mouseEvent);
-                }, { passive: false });
-                
-                console.log('Mobile touch handler added to particles canvas');
+    // Create spawnParticles function that works with all events
+    window.spawnParticles = function(event) {
+        console.log('spawnParticles called with event:', event.type);
+        
+        // Get the particles container
+        const particlesContainer = document.getElementById('particles-js');
+        if (!particlesContainer) {
+            console.error('Particles container not found');
+            return;
+        }
+        
+        // Get the canvas
+        const canvas = particlesContainer.querySelector('canvas');
+        if (!canvas) {
+            console.error('Particles canvas not found');
+            return;
+        }
+        
+        // Get coordinates from the event
+        let clientX, clientY;
+        
+        if (event.type === 'touchstart' || event.type === 'touchmove' || event.type === 'touchend') {
+            // Touch event
+            if (event.touches && event.touches.length > 0) {
+                clientX = event.touches[0].clientX;
+                clientY = event.touches[0].clientY;
             }
-        }, 2000);
-    }
+        } else {
+            // Mouse or pointer event
+            clientX = event.clientX;
+            clientY = event.clientY;
+        }
+        
+        if (clientX !== undefined && clientY !== undefined) {
+            console.log('Spawning particles at:', clientX, clientY);
+            
+            // Create a mouse event to trigger particle interaction
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: clientX,
+                clientY: clientY,
+                bubbles: true,
+                cancelable: true
+            });
+            
+            // Dispatch the event on the canvas
+            canvas.dispatchEvent(mouseEvent);
+            
+            // Also try dispatching on the window
+            window.dispatchEvent(mouseEvent);
+        }
+    };
+    
+    // Add event listeners for all types of events
+    setTimeout(function() {
+        const particlesContainer = document.getElementById('particles-js');
+        const canvas = particlesContainer.querySelector('canvas');
+        
+        if (canvas) {
+            // Add event listeners for all interaction types
+            canvas.addEventListener('click', window.spawnParticles);
+            canvas.addEventListener('touchstart', window.spawnParticles);
+            canvas.addEventListener('pointerdown', window.spawnParticles);
+            
+            // Also add to the container
+            particlesContainer.addEventListener('click', window.spawnParticles);
+            particlesContainer.addEventListener('touchstart', window.spawnParticles);
+            particlesContainer.addEventListener('pointerdown', window.spawnParticles);
+            
+            console.log('Event listeners added for spawnParticles function');
+        }
+    }, 1000);
 });
 
 // Fallback initialization if DOMContentLoaded already fired
