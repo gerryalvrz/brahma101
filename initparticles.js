@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         interactivity: {
-            detect_on: 'window', // Changed back to window for better compatibility
+            detect_on: isMobile ? 'canvas' : 'window', // Use canvas for mobile touch, window for desktop
             events: {
                 onhover: {
                     enable: true,

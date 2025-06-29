@@ -1,17 +1,36 @@
 // Simple particles fix - ensure particles work without blocking buttons
 document.addEventListener('DOMContentLoaded', function() {
+    // Detect if we're on a mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
     setTimeout(function() {
         const particlesContainer = document.getElementById('particles-js');
         if (particlesContainer) {
-            // Ensure particles stay behind content and don't capture events
+            // Keep particles behind content but allow interaction
             particlesContainer.style.zIndex = '-1';
-            particlesContainer.style.pointerEvents = 'none';
+            particlesContainer.style.pointerEvents = 'auto';
             
             const canvas = particlesContainer.querySelector('canvas');
             if (canvas) {
-                canvas.style.pointerEvents = 'none';
+                canvas.style.pointerEvents = 'auto';
+                
+                // Mobile-specific optimizations
+                if (isMobile) {
+                    canvas.style.touchAction = 'none';
+                    canvas.style.userSelect = 'none';
+                    canvas.style.webkitUserSelect = 'none';
+                }
             }
         }
+        
+        // Ensure buttons and interactive elements work
+        const interactiveElements = document.querySelectorAll('button, a, input, .clickable, .button');
+        interactiveElements.forEach(function(element) {
+            element.style.position = 'relative';
+            element.style.zIndex = '1';
+        });
+        
+        console.log('Particles fix applied for:', isMobile ? 'mobile' : 'desktop');
     }, 1000);
 });
 

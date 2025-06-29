@@ -69,7 +69,7 @@ body {
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     z-index: -1; /* Changed to negative to put particles behind content */
-    pointer-events: none; /* Don't block clicks on buttons */
+    pointer-events: auto; /* Allow particle interaction */
     touch-action: manipulation; /* Improves touch interaction on mobile */
 }
 
